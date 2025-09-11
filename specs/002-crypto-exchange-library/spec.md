@@ -41,9 +41,9 @@ As a developer using this library, I want to easily connect to different cryptoc
 - **FR-008**: The design MUST be extensible to allow adding new exchanges in the future with minimal code changes, using an abstract base class for the exchange adapter.
 
 ### Key Entities
-- **ExchangeAdapter**: An interface or base class that defines the common methods for all exchange integrations (e.g., `connect`, `get_ticker`, `place_order`).
-- **BinanceAdapter**: A concrete implementation of the `ExchangeAdapter` for the Binance exchange.
-- **BybitAdapter**: A concrete implementation of the `ExchangeAdapter` for the Bybit exchange.
+- **ExchangeAdapter**: A protocol that defines the common methods for all exchange integrations (e.g., `connect`, `get_ticker`, `place_order`).
+- **BinanceAdapter**: A concrete implementation of the `ExchangeAdapter` protocol for the Binance exchange.
+- **BybitAdapter**: A concrete implementation of the `ExchangeAdapter` protocol for the Bybit exchange.
 - **Credentials**: A data structure to hold API key and secret.
 - **Instrument**: Represents a trading pair with a base and quote currency (e.g., BTC/USDT).
 - **Order**: Represents a trading order with properties like instrument, type (market/limit), side (buy/sell), amount, and price.
