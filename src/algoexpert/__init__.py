@@ -1,8 +1,13 @@
 from typing import Protocol, runtime_checkable
 
+# Here we will import the exchange modules
+from .exchanges import binance, bybit
+
+
 @runtime_checkable
 class AlgoExpert(Protocol):
     def __init__(self, stock: str, api_key: str, api_secret: str, base_url: str, instrument: str, contract: str, mode: str):
+        # Here we will dynamically select the exchange
         ...
 
     def balance(self):
