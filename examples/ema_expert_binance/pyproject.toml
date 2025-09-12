@@ -1,0 +1,17 @@
+[project]
+name = "ema-expert-binance-examples"
+version = "0.1.0"
+description = "EMA expert for Binance"
+authors = [{ name = "Oleg Alexandrov", email = "alexandrovoleg.ru@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "algoexpert",
+]
+
+[tool.uv.sources]
+algoexpert = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
