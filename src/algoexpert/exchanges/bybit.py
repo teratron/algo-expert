@@ -8,6 +8,23 @@ class BybitAdapter:
         self.api_key = api_key
         self.api_secret = api_secret
         self.base_url = base_url if base_url else "https://api.bybit.com"
+        self.connect()
+
+    def connect(self):
+        timestamp = int(time.time() * 1000)
+        recv_window = 5000
+        query_string = "accountType=UNIFIED"
+        string_to_sign = str(timestamp) + self.api_key + str(recv_window) + query_string
+        signature = hmac.new(self.api_secret.encode('utf-8'), string_to_sign.encode('utf-8'), hashlib.sha256).hexdigest()
+        url = f"{self.base_url}/v5/account/wallet-balance?{query_string}"
+        headers = {
+            'X-BAPI-API-KEY': self.api_key,
+            'X-BAPI-TIMESTAMP': str(timestamp),
+            'X-BAPI-RECV-WINDOW': str(recv_window),
+            'X-BAPI-SIGN': signature,
+        }
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
 
     def balance(self):
         timestamp = int(time.time() * 1000)
@@ -25,3 +42,30 @@ class BybitAdapter:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         return response.json()
+
+    def on_init(self, *args, **kwargs):
+        pass
+
+    def on_deinit(self, *args, **kwargs):
+        pass
+
+    def on_tick(self, *args, **kwargs):
+        pass
+
+    def on_bar(self, *args, **kwargs):
+        pass
+
+    def on_timer(self, *args, **kwargs):
+        pass
+
+    def on_trade(self, *args, **kwargs):
+        pass
+
+    def on_transaction(self, *args, **kwargs):
+        pass
+
+    def on_book(self, *args, **kwargs):
+        pass
+
+    def run(self):
+        pass

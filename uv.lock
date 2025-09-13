@@ -12,28 +12,23 @@ dependencies = [
     { name = "websockets" },
 ]
 
-[package.dev-dependencies]
+[package.optional-dependencies]
 dev = [
     { name = "mypy" },
-]
-lint = [
-    { name = "ruff" },
-]
-test = [
     { name = "pytest" },
+    { name = "ruff" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "mypy", marker = "extra == 'dev'" },
+    { name = "pytest", marker = "extra == 'dev'" },
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "requests", specifier = ">=2.32.5" },
+    { name = "ruff", marker = "extra == 'dev'" },
     { name = "websockets", specifier = ">=15.0.1" },
 ]
-
-[package.metadata.requires-dev]
-dev = [{ name = "mypy" }]
-lint = [{ name = "ruff" }]
-test = [{ name = "pytest" }]
+provides-extras = ["dev"]
 
 [[package]]
 name = "certifi"
