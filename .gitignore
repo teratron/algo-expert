@@ -3,3 +3,12 @@ __pycache__/
 .venv
 .mypy_cache
 .pytest_cache
+
+### Spec Kit
+.github/prompts/
+.claude/commands/
+.gemini/commands/
+.cursor/commands/
+.specify/memory/
+.specify/scripts/
+.specify/templates/
