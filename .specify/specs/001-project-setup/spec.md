@@ -15,7 +15,7 @@ This document outlines the technical requirements for the project's development 
 - **TR-002**: The project MUST use `uv` as the sole package manager.
 - **TR-003**: The use of `pip` is PROHIBITED.
 - **TR-004**: New packages MUST be added using `uv add <package>` or `uv install <package>`.
-- **TR-005**: `uv pip` commands are PROHIBITED to avoid confusion with `pip`.
+- **TR-005**: Direct use of `pip` is PROHIBITED. `uv pip` commands should be used with caution and only when a `uv` equivalent is not available, such as for installing editable dependencies with extras (e.g., `uv pip install -e .[dev]`).
 
 ### Key Entities
 N/A
