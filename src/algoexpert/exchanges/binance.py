@@ -39,14 +39,14 @@ class BinanceAdapter:
         Tests the connection by making a call to the account endpoint.
         The client will raise an exception for non-2xx responses.
         """
-        self.client.account()
+        self.client.get_account()
 
     def balance(self):
         """
         Retrieves account balance information.
         The client will raise an exception for non-2xx responses.
         """
-        return self.client.account()
+        return self.client.get_account()
 
     def on_init(self, *args, **kwargs):
         pass
