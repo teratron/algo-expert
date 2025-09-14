@@ -1,4 +1,4 @@
-from binance.spot import Spot as SpotClient
+from binance.client import Client
 import asyncio
 import websockets
 import json
@@ -27,7 +27,7 @@ class BinanceAdapter:
         self.instrument = instrument
         self.market_type = market_type
         self.contract_type = contract_type
-        self.client = SpotClient(api_key=self.api_key, api_secret=self.api_secret, base_url=self.base_url)
+        self.client = Client(api_key=self.api_key, api_secret=self.api_secret)
         
         # Initialize the bar aggregator for multiple timeframes
         self.aggregator = BarAggregator(timeframes=timeframes, on_bar_callback=self.on_bar)

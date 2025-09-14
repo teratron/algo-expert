@@ -1,5 +1,7 @@
 """AlgoExpert trading bot implementation using EMA (Exponential Moving Average) strategy"""
+import sys
 import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src')))
 import pandas as pd
 from dotenv import load_dotenv
 
@@ -11,6 +13,7 @@ load_dotenv()
 # Initialize AlgoExpert with Bybit connection parameters
 expert = AlgoExpert(
     exchange="bybit",
+    instrument="BTCUSDT",
     api_key=os.getenv("BYBIT_API_KEY"),
     api_secret=os.getenv("BYBIT_API_SECRET"),
     base_url=os.getenv("BYBIT_BASE_URL"),

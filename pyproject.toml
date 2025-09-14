@@ -9,6 +9,8 @@ dependencies = [
     "python-dotenv>=1.1.1",
     "websockets>=15.0.1",
     "pybit>=5.5.0",
+    "python-binance>=1.0.16",
+    "pandas>=2.2.2",
 ]
 
 [tool.pytest.ini_options]
