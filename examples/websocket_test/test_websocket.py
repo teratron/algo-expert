@@ -31,7 +31,9 @@ async def main():
     expert = AlgoExpert(
         exchange=EXCHANGE_TO_TEST,
         instrument=INSTRUMENT,
-        timeframes=TIMEFRAMES
+        timeframes=TIMEFRAMES,
+        log_file="websocket_test.log",
+        trade_log_file="websocket_trades.log",
     )
 
     logger.info(f"Starting expert advisor to listen for trades on {INSTRUMENT} via {EXCHANGE_TO_TEST}...")

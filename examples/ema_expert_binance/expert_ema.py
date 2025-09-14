@@ -20,6 +20,8 @@ expert = AlgoExpert(
     market_type="futures",   # Using futures market
     contract_type="coin_m",  # Coin-margined contracts
     mode="paper",            # Paper trading mode (no real trades)
+    log_file="binance_expert.log",
+    trade_log_file="binance_trades.log",
 )
 
 # Check account balance before starting

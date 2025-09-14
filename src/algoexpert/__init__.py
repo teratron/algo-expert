@@ -4,12 +4,8 @@ import os
 import logging
 from typing import Optional, List, Any
 from dotenv import load_dotenv
+from .logging_config import setup_logging, setup_trade_logging
 
-# Configure basic logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
-)
 logger = logging.getLogger(__name__)
 
 class AlgoExpert:
@@ -25,10 +21,19 @@ class AlgoExpert:
         mode: str = "",
         market_type: str = "",
         contract_type: str = "",
+        log_level: Optional[int] = None,
+        log_file: Optional[str] = None,
+        trade_log_file: Optional[str] = None,
     ):
+        setup_logging(level=log_level if log_level is not None else logging.INFO, log_file=log_file) # Call setup_logging at the beginning of __init__
         logger.info(f"Initializing AlgoExpert for exchange: {exchange}, instrument: {instrument}")
         load_dotenv()  # Load .env file from the current working directory
         self.timeframes = timeframes
+
+        if trade_log_file:
+            self.trade_logger = setup_trade_logging(trade_log_file, level=log_level if log_level is not None else logging.INFO)
+        else:
+            self.trade_logger = None
 
         try:
             logger.debug(f"Loading adapter for exchange: {exchange}")
@@ -83,9 +88,13 @@ class AlgoExpert:
         return self.adapter.on_timer(*args, **kwargs)
 
     def on_trade(self, *args, **kwargs):
+        if self.trade_logger:
+            self.trade_logger.info(f"Trade executed: {kwargs}")
         return self.adapter.on_trade(*args, **kwargs)
 
     def on_transaction(self, *args, **kwargs):
+        if self.trade_logger:
+            self.trade_logger.info(f"Transaction completed: {kwargs}")
         return self.adapter.on_transaction(*args, **kwargs)
 
     def on_book(self, *args, **kwargs):
@@ -95,3 +104,4 @@ class AlgoExpert:
         logger.info("Starting expert advisor run loop...")
         await self.adapter.run()
         logger.info("Expert advisor run loop finished.")
+
