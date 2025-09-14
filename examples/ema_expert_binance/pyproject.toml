@@ -7,6 +7,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "algoexpert",
+    "pandas",
+    "python-dotenv",
+    "binance-connector>=3.9.0",
 ]
 
 [tool.uv.sources]

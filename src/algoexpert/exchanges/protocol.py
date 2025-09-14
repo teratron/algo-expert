@@ -1,4 +1,4 @@
-from typing import Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 @runtime_checkable
 class ExchangeAdapter(Protocol):
@@ -20,7 +20,7 @@ class ExchangeAdapter(Protocol):
     def on_tick(self, *args, **kwargs):
         ...
 
-    def on_bar(self, *args, **kwargs):
+    def on_bar(self, bar: Any, timeframe: str):
         ...
 
     def on_timer(self, *args, **kwargs):
@@ -35,5 +35,5 @@ class ExchangeAdapter(Protocol):
     def on_book(self, *args, **kwargs):
         ...
 
-    def run(self):
+    async def run(self):
         ...

@@ -28,3 +28,12 @@
 - [x] T012 [P]: Add unit tests for the `AlgoExpert` class logic in `tests/unit/test_algo_expert.py`.
 - [x] T013 [P]: Update `README.md` with the new architecture and usage examples.
 - [x] T014 [P]: Update the `docs` directory with more detailed documentation.
+
+## Phase 3.6: Refactoring
+
+- [x] T015: Refactor exchange adapters to use SDKs instead of direct 'requests' calls.
+
+## Phase 3.7: Infrastructure
+
+- [x] T016: Integrate python-dotenv for automatic credential loading.
+- [x] T017: Implement structured logging throughout the library.
