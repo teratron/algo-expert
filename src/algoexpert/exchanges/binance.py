@@ -17,12 +17,16 @@ class BinanceAdapter:
         instrument: str, 
         contract: str, 
         mode: str,
+        market_type: str,
+        contract_type: str,
         timeframes: List[str] = ['1m']
     ):
         self.api_key = api_key
         self.api_secret = api_secret
         self.base_url = base_url if base_url else "https://api.binance.com"
         self.instrument = instrument
+        self.market_type = market_type
+        self.contract_type = contract_type
         self.client = SpotClient(api_key=self.api_key, api_secret=self.api_secret, base_url=self.base_url)
         
         # Initialize the bar aggregator for multiple timeframes

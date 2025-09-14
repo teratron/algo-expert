@@ -23,6 +23,8 @@ class AlgoExpert:
         base_url: str = "",
         contract: str = "",
         mode: str = "",
+        market_type: str = "",
+        contract_type: str = "",
     ):
         logger.info(f"Initializing AlgoExpert for exchange: {exchange}, instrument: {instrument}")
         load_dotenv()  # Load .env file from the current working directory
@@ -56,6 +58,9 @@ class AlgoExpert:
             instrument=instrument,
             contract=contract,
             mode=mode,
+            market_type=market_type,
+            contract_type=contract_type,
+            timeframes=timeframes,
         )
         logger.info(f"Successfully initialized adapter for {exchange}")
 

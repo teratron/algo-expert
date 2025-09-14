@@ -17,12 +17,16 @@ class BybitAdapter:
         instrument: str, 
         contract: str, 
         mode: str,
+        market_type: str,
+        contract_type: str,
         timeframes: List[str] = ['1m']
     ):
         self.api_key = api_key
         self.api_secret = api_secret
         self.base_url = base_url if base_url else "https://api.bybit.com"
         self.instrument = instrument
+        self.market_type = market_type
+        self.contract_type = contract_type
         # pybit's HTTP client uses the 'endpoint' parameter for the base URL
         self.client = HTTP(api_key=self.api_key, api_secret=self.api_secret, endpoint=self.base_url)
         

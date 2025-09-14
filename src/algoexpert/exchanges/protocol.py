@@ -2,7 +2,7 @@ from typing import Any, Protocol, runtime_checkable
 
 @runtime_checkable
 class ExchangeAdapter(Protocol):
-    def __init__(self, api_key: str, api_secret: str, base_url: str, instrument: str, contract: str, mode: str):
+    def __init__(self, api_key: str, api_secret: str, base_url: str, instrument: str, contract: str, mode: str, market_type: str, contract_type: str):
         ...
 
     def connect(self):

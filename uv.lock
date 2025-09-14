@@ -15,7 +15,6 @@ name = "algoexpert"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "binance-connector" },
     { name = "pybit" },
     { name = "python-dotenv" },
     { name = "websockets" },
@@ -30,7 +29,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "binance-connector", specifier = ">=3.9.0" },
     { name = "mypy", marker = "extra == 'dev'" },
     { name = "pybit", specifier = ">=5.5.0" },
     { name = "pytest", marker = "extra == 'dev'" },
@@ -120,6 +118,7 @@ version = "0.1.0"
 source = { editable = "examples/ema_expert_binance" }
 dependencies = [
     { name = "algoexpert" },
+    { name = "binance-connector" },
     { name = "pandas" },
     { name = "python-dotenv" },
 ]
@@ -127,6 +126,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "algoexpert", editable = "." },
+    { name = "binance-connector", specifier = ">=3.9.0" },
     { name = "pandas" },
     { name = "python-dotenv" },
 ]
@@ -137,10 +137,18 @@ version = "0.1.0"
 source = { editable = "examples/ema_expert_bybit" }
 dependencies = [
     { name = "algoexpert" },
+    { name = "pandas" },
+    { name = "pybit" },
+    { name = "python-dotenv" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "algoexpert", editable = "." }]
+requires-dist = [
+    { name = "algoexpert", editable = "." },
+    { name = "pandas" },
+    { name = "pybit", specifier = ">=5.5.0" },
+    { name = "python-dotenv" },
+]
 
 [[package]]
 name = "idna"
