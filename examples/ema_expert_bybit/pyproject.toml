@@ -7,6 +7,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "algoexpert",
+    "pandas",
+    "python-dotenv",
+    "pybit>=5.5.0",
 ]
 
 [tool.uv.sources]
@@ -15,3 +18,6 @@ algoexpert = { workspace = true }
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+files = ["expert_ema.py"]

@@ -7,8 +7,10 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "python-dotenv>=1.1.1",
-    "requests>=2.32.5",
     "websockets>=15.0.1",
+    "pybit>=5.5.0",
+    "python-binance>=1.0.16",
+    "pandas>=2.2.2",
 ]
 
 [tool.pytest.ini_options]
@@ -17,11 +19,21 @@ pythonpath = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = [
+  "src"
+]
 
 [project.optional-dependencies]
 dev = [
     "mypy",
     "pytest",
     "ruff",
+]
+
+[tool.uv.workspace]
+members = [
+    ".",
+    "examples/ema_expert_binance",
+    "examples/ema_expert_bybit",
+    "examples/websocket_test"
 ]

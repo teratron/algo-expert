@@ -68,3 +68,41 @@ bybit_expert = AlgoExpert(
 balance = bybit_expert.balance()
 print("Bybit Balance:", balance)
 ```
+
+## Logging Configuration
+
+AlgoExpert provides a flexible logging configuration that allows you to control the verbosity and output destination of log messages. You can configure logging when initializing the `AlgoExpert` class.
+
+### Basic Logging
+
+You can specify the `log_level` and `log_file` parameters in the `AlgoExpert` constructor:
+
+```python
+import logging
+from algoexpert import AlgoExpert
+
+expert = AlgoExpert(
+    # ... other parameters ...
+    log_level=logging.DEBUG,  # Set the desired logging level (e.g., logging.INFO, logging.DEBUG)
+    log_file="my_expert.log", # Optional: Specify a file to write logs to
+)
+```
+
+If `log_file` is not provided, logs will be printed to the console (stdout) by default.
+
+### Trade Logging
+
+In addition to general logging, AlgoExpert allows you to record all executed trades to a separate, dedicated log file. This is useful for auditing and analyzing your trading activity.
+
+To enable trade logging, provide the `trade_log_file` parameter in the `AlgoExpert` constructor:
+
+```python
+from algoexpert import AlgoExpert
+
+expert = AlgoExpert(
+    # ... other parameters ...
+    trade_log_file="my_trades.log", # Specify a file to write trade records to
+)
+```
+
+Trade log entries will include details such as the trade execution time, symbol, price, quantity, and type (buy/sell).

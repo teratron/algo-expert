@@ -1,17 +1,27 @@
 """AlgoExpert trading bot implementation using EMA (Exponential Moving Average) strategy"""
+import sys
 import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src')))
+#import pandas as pd
+from dotenv import load_dotenv
 
 from algoexpert import AlgoExpert
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize AlgoExpert with Binance connection parameters
 expert = AlgoExpert(
     exchange="binance",
+    instrument="BTCUSDT",
     api_key=os.getenv("BINANCE_API_KEY"),
     api_secret=os.getenv("BINANCE_API_SECRET"),
     base_url=os.getenv("BINANCE_BASE_URL"),
     market_type="futures",   # Using futures market
     contract_type="coin_m",  # Coin-margined contracts
     mode="paper",            # Paper trading mode (no real trades)
+    log_file="binance_expert.log",
+    trade_log_file="binance_trades.log",
 )
 
 # Check account balance before starting
@@ -60,26 +70,55 @@ def tick(rates) -> None:
 
 @expert.on_bar("1h")
 def bar(rates) -> None:
-    """Called when a new 1-hour bar (candle) is formed.
+    """Called when a new 1-hour bar is formed.
     This is where the main EMA trading logic is implemented.
 
     Args:
         rates: Bar data containing OHLCV information
     """
-    print("*** on_bar ***", rates)
+    print(f"*** on_bar received {len(rates)} rates ***")
 
-    # EMA trading logic placeholder
-    # ---------------------------------
-    # Here the expert calculates EMA signals and makes trading decisions
-    # based on the crossover of fast and slow EMA indicators
+    # --- EMA trading logic implementation ---
+    # try:
+    #     # 1. Create a DataFrame from the rates data
+    #     # Assuming `rates` is a list of objects with a .close attribute
+    #     df = pd.DataFrame([{'close': r.close} for r in rates])
 
-    # Implementation steps:
-    # 1. Extract closing prices from historical data
-    # 2. Calculate slow EMA (e.g., 7 periods) and fast EMA (e.g., 3 periods)
-    # 3. Detect crossovers between fast and slow EMAs
-    # 4. Generate buy signals when fast EMA crosses above slow EMA
-    # 5. Generate sell signals when fast EMA crosses below slow EMA
-    # 6. Execute trades based on the signals
+    #     # We need at least 8 data points to compare a 7-period EMA with its previous value
+    #     if len(df) < 8:
+    #         print("Not enough data to calculate EMA crossover. Skipping.")
+    #         return
+
+    #     # 2. Calculate slow and fast EMAs
+    #     fast_ema_period = 3
+    #     slow_ema_period = 7
+    #     df['fast_ema'] = df['close'].ewm(span=fast_ema_period, adjust=False).mean()
+    #     df['slow_ema'] = df['close'].ewm(span=slow_ema_period, adjust=False).mean()
+
+    #     # 3. Get the last two values to check for a crossover
+    #     last_row = df.iloc[-1]
+    #     prev_row = df.iloc[-2]
+
+    #     # 4. Detect crossovers and generate signals
+    #     # Golden Cross (Buy Signal)
+    #     if prev_row['fast_ema'] < prev_row['slow_ema'] and last_row['fast_ema'] > last_row['slow_ema']:
+    #         print("BUY SIGNAL DETECTED: Fast EMA crossed above Slow EMA.")
+    #         # 5. Execute buy trade
+    #         # Assuming expert.buy() is the method to open a long position
+    #         # The quantity is taken from the @on_init decorator
+    #         expert.buy()
+    #         print("Executing BUY trade.")
+
+    #     # Death Cross (Sell Signal)
+    #     elif prev_row['fast_ema'] > prev_row['slow_ema'] and last_row['fast_ema'] < last_row['slow_ema']:
+    #         print("SELL SIGNAL DETECTED: Fast EMA crossed below Slow EMA.")
+    #         # 5. Execute sell trade
+    #         # Assuming expert.sell() is the method to open a short position
+    #         expert.sell()
+    #         print("Executing SELL trade.")
+
+    # except Exception as e:
+    #     print(f"An error occurred in on_bar: {e}")
 
 
 @expert.on_timer(1)

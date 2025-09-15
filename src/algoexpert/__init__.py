@@ -1,20 +1,73 @@
 import importlib
+import asyncio
+import os
+import logging
+from typing import Optional, List, Any
+from dotenv import load_dotenv
+from .logging_config import setup_logging, setup_trade_logging
+
+logger = logging.getLogger(__name__)
 
 class AlgoExpert:
-    def __init__(self, exchange: str, api_key: str, api_secret: str, base_url: str, instrument: str, contract: str, mode: str):
+    def __init__(
+        self,
+        exchange: str,
+        instrument: str,
+        timeframes: List[str] = ['1m'],
+        api_key: Optional[str] = None,
+        api_secret: Optional[str] = None,
+        base_url: str = "",
+        contract: str = "",
+        mode: str = "",
+        market_type: str = "",
+        contract_type: str = "",
+        log_level: Optional[int] = None,
+        log_file: Optional[str] = None,
+        trade_log_file: Optional[str] = None,
+    ):
+        setup_logging(level=log_level if log_level is not None else logging.INFO, log_file=log_file) # Call setup_logging at the beginning of __init__
+        logger.info(f"Initializing AlgoExpert for exchange: {exchange}, instrument: {instrument}")
+        load_dotenv()  # Load .env file from the current working directory
+        self.timeframes = timeframes
+
+        if trade_log_file:
+            self.trade_logger = setup_trade_logging(trade_log_file, level=log_level if log_level is not None else logging.INFO)
+        else:
+            self.trade_logger = None
+
         try:
+            logger.debug(f"Loading adapter for exchange: {exchange}")
             module = importlib.import_module(f".exchanges.{exchange}", package="algoexpert")
             adapter_class = getattr(module, f"{exchange.capitalize()}Adapter")
-            self.adapter = adapter_class(
-                api_key=api_key,
-                api_secret=api_secret,
-                base_url=base_url,
-                instrument=instrument,
-                contract=contract,
-                mode=mode
+            logger.info(f"Successfully found adapter for {exchange}")
+        except (ImportError, AttributeError) as e:
+            logger.error(f"Failed to load adapter for exchange: {exchange}", exc_info=True)
+            raise ValueError(f"Unsupported exchange: {exchange}") from e
+
+        # Load credentials from environment if not provided
+        api_key = api_key or os.getenv(f"{exchange.upper()}_API_KEY")
+        api_secret = api_secret or os.getenv(f"{exchange.upper()}_API_SECRET")
+
+        if not api_key or not api_secret:
+            logger.error("API key and secret are required but not found.")
+            raise ValueError(
+                f"API key and secret for {exchange.upper()} are required. "
+                f"Provide them to the constructor or set them as environment variables "
+                f"(e.g., {exchange.upper()}_API_KEY)."
             )
-        except (ImportError, AttributeError):
-            raise ValueError(f"Unsupported exchange: {exchange}")
+
+        self.adapter = adapter_class(
+            api_key=api_key,
+            api_secret=api_secret,
+            base_url=base_url,
+            instrument=instrument,
+            contract=contract,
+            mode=mode,
+            market_type=market_type,
+            contract_type=contract_type,
+            timeframes=timeframes,
+        )
+        logger.info(f"Successfully initialized adapter for {exchange}")
 
     def balance(self):
         return self.adapter.balance()
@@ -28,20 +81,27 @@ class AlgoExpert:
     def on_tick(self, *args, **kwargs):
         return self.adapter.on_tick(*args, **kwargs)
 
-    def on_bar(self, *args, **kwargs):
-        return self.adapter.on_bar(*args, **kwargs)
+    def on_bar(self, bar: Any, timeframe: str):
+        return self.adapter.on_bar(bar, timeframe)
 
     def on_timer(self, *args, **kwargs):
         return self.adapter.on_timer(*args, **kwargs)
 
     def on_trade(self, *args, **kwargs):
+        if self.trade_logger:
+            self.trade_logger.info(f"Trade executed: {kwargs}")
         return self.adapter.on_trade(*args, **kwargs)
 
     def on_transaction(self, *args, **kwargs):
+        if self.trade_logger:
+            self.trade_logger.info(f"Transaction completed: {kwargs}")
         return self.adapter.on_transaction(*args, **kwargs)
 
     def on_book(self, *args, **kwargs):
         return self.adapter.on_book(*args, **kwargs)
 
-    def run(self):
-        return self.adapter.run()
+    async def run(self):
+        logger.info("Starting expert advisor run loop...")
+        await self.adapter.run()
+        logger.info("Expert advisor run loop finished.")
+
