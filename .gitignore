@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv
+.mypy_cache
+.pytest_cache
+src/algoexpert.egg-info/
+
+### Spec Kit
+.github/prompts/
+.claude/commands/
+.gemini/commands/
+.cursor/commands/
+.specify/memory/
+.specify/scripts/
+.specify/templates/

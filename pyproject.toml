@@ -1,0 +1,27 @@
+[project]
+name = "algoexpert"
+version = "0.1.0"
+description = "Algorithmic trading library"
+authors = [{ name = "Oleg Alexandrov", email = "alexandrovoleg.ru@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "python-dotenv>=1.1.1",
+    "requests>=2.32.5",
+    "websockets>=15.0.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+dev = [
+    "mypy",
+    "pytest",
+    "ruff",
+]
